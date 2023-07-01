@@ -159,3 +159,7 @@
 .note-display-none{
     display: none;
 }
+img{
+    height: 100%;
+    width: 100%;
+}

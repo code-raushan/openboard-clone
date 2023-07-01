@@ -38,9 +38,8 @@ eraser.addEventListener("click", () => {
   eraserTool.classList.toggle("eraser-display-none");
 });
 stickyNotes.addEventListener("click", (event) => {
-  const stickyNote = document.createElement("div");
-  stickyNote.setAttribute('class', 'sticky-container')
-  stickyNote.innerHTML = `
+ 
+  let stickyTemplate = `
     <div class="sticky-header-cont">
     <div class="green-min minimise"></div>
     <div class="red-close remove"></div>
@@ -49,6 +48,36 @@ stickyNotes.addEventListener("click", (event) => {
     <textarea class="note"></textarea>
 </div>
     `;
+    createSticky(stickyTemplate)
+    
+
+});
+
+uploadBtn.addEventListener("click", ()=>{
+    let input = document.createElement("input");
+    input.setAttribute("type", "file");
+    input.click();
+    input.addEventListener('change', ()=>{
+        let file = input.files[0];
+        let url = URL.createObjectURL(file);
+
+        let stickyTemplate = `
+        <div class="sticky-header-cont">
+        <div class="green-min minimise"></div>
+        <div class="red-close remove"></div>
+    </div>
+    <div class="sticky-text-cont">
+        <img src=${url} class="note"></img>
+    </div>
+        `;
+        createSticky(stickyTemplate)
+    });
+})
+
+function createSticky(stickyTemplate){
+    const stickyNote = document.createElement("div");
+    stickyNote.setAttribute('class', 'sticky-container');
+    stickyNote.innerHTML = stickyTemplate;
     document.body.appendChild(stickyNote);
     
     const minimise = stickyNote.querySelector('.minimise');
@@ -70,15 +99,7 @@ stickyNotes.addEventListener("click", (event) => {
         return false;
     }
 
-});
-
-uploadBtn.addEventListener("click", ()=>{
-    let input = document.createElement("input");
-    input.setAttribute("type", "file");
-    input.click();
-})
-
-
+}
 
 // actions on sticky notes
 
