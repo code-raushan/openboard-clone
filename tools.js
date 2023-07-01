@@ -10,6 +10,7 @@ function openTools() {
   iconElem.classList.remove("fa-bars");
   iconElem.classList.add("fa-times");
   toolsContainer.style.display = "flex";
+  toolsContainer.classList.add('scale-tool')
 }
 function closeTools() {
   let iconElem = optionContainer.children[0];
