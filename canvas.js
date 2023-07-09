@@ -3,7 +3,8 @@ const pencilColorsElem = document.querySelectorAll(".pencil-color");
 const pencilColorsWidth = document.querySelector(".pencilwidth");
 const downloadBtn = document.querySelector("img[alt='download']");
 const eraserBtn = document.querySelector("img[alt='eraser']");
-const eraserWidth = document.querySelector(".eraserwidth")
+const eraserWidth = document.querySelector(".eraserwidth");
+
 let eraserFlag = false;
 
 canvas.height = window.innerHeight;
@@ -11,6 +12,8 @@ canvas.width = window.innerWidth;
 
 const tool = canvas.getContext("2d");
 
+let pencilWidthValue;
+let eraserWidthValue;
 tool.lineWidth = "3";
 
 let pencilColor = "blue";
@@ -56,6 +59,7 @@ downloadBtn.addEventListener("click", ()=>{
 function strokeBegin(strokeObj) {
   tool.beginPath();
   tool.strokeStyle = eraserFlag? eraserColor: pencilColor;
+  tool.lineWidth = eraserFlag? eraserWidthValue: pencilWidthValue;
   tool.moveTo(strokeObj.x, strokeObj.y);
 }
 function drawStroke(strokeObj) {
@@ -63,10 +67,10 @@ function drawStroke(strokeObj) {
   tool.stroke();
 }
 pencilColorsWidth.addEventListener("change", ()=>{
-  tool.lineWidth = pencilColorsWidth.value;
+  pencilWidthValue = pencilColorsWidth.value;
 })
 eraserWidth.addEventListener("change", ()=>{
-  tool.lineWidth = eraserWidth.value;
+  eraserWidthValue = eraserWidth.value;
 })
 
 pencilColorsElem.forEach((colorElem) => {
