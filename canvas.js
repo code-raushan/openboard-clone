@@ -14,6 +14,8 @@ const tool = canvas.getContext("2d");
 
 let pencilWidthValue;
 let eraserWidthValue;
+
+// by default width of pencil and eraser
 tool.lineWidth = "3";
 
 let pencilColor = "blue";
@@ -46,6 +48,7 @@ canvas.addEventListener("mouseup", () => {
   mousedown = false;
 });
 
+// implementation of download feature
 downloadBtn.addEventListener("click", ()=>{
   const url = canvas.toDataURL();
 
@@ -66,13 +69,18 @@ function drawStroke(strokeObj) {
   tool.lineTo(strokeObj.x, strokeObj.y);
   tool.stroke();
 }
+
+// setting pencil width
 pencilColorsWidth.addEventListener("change", ()=>{
   pencilWidthValue = pencilColorsWidth.value;
 })
+
+// setting eraser width
 eraserWidth.addEventListener("change", ()=>{
   eraserWidthValue = eraserWidth.value;
 })
 
+// setting pencil color
 pencilColorsElem.forEach((colorElem) => {
   colorElem.addEventListener("click", () => {
     pencilColor = colorElem.classList[0];
