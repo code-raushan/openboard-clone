@@ -4,13 +4,15 @@ const pencilColorsWidth = document.querySelector(".pencilwidth");
 const downloadBtn = document.querySelector("img[alt='download']");
 const eraserBtn = document.querySelector("img[alt='eraser']");
 const eraserWidth = document.querySelector(".eraserwidth");
+const undoBtn = document.querySelector("img[alt='undo']");
+const redoBtn = document.querySelector("img[alt='redo']");
 
 let eraserFlag = false;
 
 canvas.height = window.innerHeight;
 canvas.width = window.innerWidth;
 
-const tool = canvas.getContext("2d");
+const tool = canvas.getContext("2d", {willReadFrequently: true} );
 
 let pencilWidthValue;
 let eraserWidthValue;
@@ -23,8 +25,10 @@ const eraserColor = "white";
 
 let mousedown = false;
 
-// move to -> line to
+let trackerArr = [];
+let trackerIdx = 0;
 
+// move to -> line to
 
 eraserBtn.addEventListener("click", ()=>{
   eraserFlag = !eraserFlag;
@@ -46,7 +50,44 @@ canvas.addEventListener("mousemove", (e) => {
 });
 canvas.addEventListener("mouseup", () => {
   mousedown = false;
+  let img = tool.getImageData(0, 0, canvas.width, canvas.height);
+  trackerArr.push(img);
+  trackerIdx = trackerArr.length - 1;
+
 });
+
+// implementation of undo and redo features
+
+undoBtn.addEventListener("click", (e)=>{
+  if(trackerIdx>0) trackerIdx--;
+  // action
+  let obj = {
+    track: trackerIdx,
+    arr: trackerArr
+  }
+  undoRedoCanvas(obj)
+})
+
+redoBtn.addEventListener("click", (e)=>{
+  if(trackerIdx<trackerArr.length-1) trackerIdx++;
+  // action
+  let obj = {
+    track: trackerIdx,
+    arr: trackerArr
+  }
+  undoRedoCanvas(obj)
+})
+
+//~ function for undo and redo action
+function undoRedoCanvas(trackerObj){
+  let trackerIdx = trackerObj.track;
+  let trackerArr = trackerObj.arr;
+  let img = trackerArr[trackerIdx];
+
+  tool.putImageData(img, 0, 0)
+}
+
+
 
 // implementation of download feature
 downloadBtn.addEventListener("click", ()=>{
