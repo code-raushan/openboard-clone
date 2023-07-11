@@ -6,7 +6,7 @@ const eraserBtn = document.querySelector("img[alt='eraser']");
 const eraserWidth = document.querySelector(".eraserwidth");
 const undoBtn = document.querySelector("img[alt='undo']");
 const redoBtn = document.querySelector("img[alt='redo']");
-
+const clearBtn = document.querySelector('.clear-btn')
 
 
 let eraserFlag = false;
@@ -63,9 +63,12 @@ canvas.addEventListener("mousemove", (e) => {
 canvas.addEventListener("mouseup", () => {
   mousedown = false;
   let img = tool.getImageData(0, 0, canvas.width, canvas.height);
+  // let img = canvas.toDataURL();
   trackerArr.push(img);
   trackerIdx = trackerArr.length - 1;
-  let lastSnapshot = canvas.toDataURL()
+
+  let lastSnapshot = canvas.toDataURL();
+  
   window.localStorage.setItem("lastSnapshot", lastSnapshot)
 });
 
@@ -141,3 +144,7 @@ pencilColorsElem.forEach((colorElem) => {
     pencilColor = colorElem.classList[0];
   });
 });
+
+clearBtn.addEventListener("click", (e)=>{
+  tool.clearRect(0, 0, canvas.width, canvas.height)
+})

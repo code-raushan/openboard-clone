@@ -170,3 +170,14 @@ img{
 .tools-container img{
     cursor: pointer;
 }
+.clear-btn-container{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}
+.clear-btn{
+    padding: 10px 15px;
+    font-size: 15px;
+    border-radius: 7.5px;
+    cursor: pointer;
+}
