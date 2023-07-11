@@ -7,12 +7,24 @@ const eraserWidth = document.querySelector(".eraserwidth");
 const undoBtn = document.querySelector("img[alt='undo']");
 const redoBtn = document.querySelector("img[alt='redo']");
 
+
+
 let eraserFlag = false;
 
 canvas.height = window.innerHeight;
 canvas.width = window.innerWidth;
 
 const tool = canvas.getContext("2d", {willReadFrequently: true} );
+
+window.onload = ()=>{
+  let src = localStorage.getItem("lastSnapshot");
+  let img = document.createElement('img');
+  img.src=src;
+  img.onload = ()=>{
+    tool.drawImage(img, 0, 0)
+  }
+}
+
 
 let pencilWidthValue;
 let eraserWidthValue;
@@ -53,7 +65,8 @@ canvas.addEventListener("mouseup", () => {
   let img = tool.getImageData(0, 0, canvas.width, canvas.height);
   trackerArr.push(img);
   trackerIdx = trackerArr.length - 1;
-
+  let lastSnapshot = canvas.toDataURL()
+  window.localStorage.setItem("lastSnapshot", lastSnapshot)
 });
 
 // implementation of undo and redo features
@@ -66,7 +79,7 @@ undoBtn.addEventListener("click", (e)=>{
     arr: trackerArr
   }
   undoRedoCanvas(obj)
-})
+});
 
 redoBtn.addEventListener("click", (e)=>{
   if(trackerIdx<trackerArr.length-1) trackerIdx++;
@@ -76,17 +89,17 @@ redoBtn.addEventListener("click", (e)=>{
     arr: trackerArr
   }
   undoRedoCanvas(obj)
-})
+});
 
 //~ function for undo and redo action
 function undoRedoCanvas(trackerObj){
+
   let trackerIdx = trackerObj.track;
   let trackerArr = trackerObj.arr;
   let img = trackerArr[trackerIdx];
 
   tool.putImageData(img, 0, 0)
-}
-
+};
 
 
 // implementation of download feature
@@ -97,7 +110,7 @@ downloadBtn.addEventListener("click", ()=>{
   a.href = url;
   a.download = "board.jpg"
   a.click();
-})
+});
 
 
 function strokeBegin(strokeObj) {
@@ -105,21 +118,22 @@ function strokeBegin(strokeObj) {
   tool.strokeStyle = eraserFlag? eraserColor: pencilColor;
   tool.lineWidth = eraserFlag? eraserWidthValue: pencilWidthValue;
   tool.moveTo(strokeObj.x, strokeObj.y);
-}
+};
+
 function drawStroke(strokeObj) {
   tool.lineTo(strokeObj.x, strokeObj.y);
   tool.stroke();
-}
+};
 
 // setting pencil width
 pencilColorsWidth.addEventListener("change", ()=>{
   pencilWidthValue = pencilColorsWidth.value;
-})
+});
 
 // setting eraser width
 eraserWidth.addEventListener("change", ()=>{
   eraserWidthValue = eraserWidth.value;
-})
+});
 
 // setting pencil color
 pencilColorsElem.forEach((colorElem) => {

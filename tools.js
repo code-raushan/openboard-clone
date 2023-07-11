@@ -129,11 +129,9 @@ function dragAndDrop(element, event) {
         element.style.left = pageX - shiftX + 'px';
         element.style.top = pageY - shiftY + 'px';
     }
-
     function onMouseMove(event) {
         moveAt(event.pageX, event.pageY);
     }
-
     // move the ball on mousemove
     document.addEventListener('mousemove', onMouseMove);
 
